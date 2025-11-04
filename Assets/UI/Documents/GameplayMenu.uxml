@@ -1,0 +1,9 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI/StyleSheet/GameplayMenu.uss?fileID=7433441132597879392&amp;guid=d168e5d45a927444492c276b3c8c053d&amp;type=3#GameplayMenu" />
+    <ui:VisualElement name="GameplayUI" style="flex-grow: 1; align-self: center;">
+        <ui:VisualElement name="CenterPanel" style="flex-grow: 1; flex-direction: column; flex-wrap: nowrap; width: 100%; height: 0; justify-content: flex-start; align-items: center;">
+            <ui:Label name="HealthUI" text="Health&#10;" class="title-Label" style="font-size: 54px; -unity-text-align: upper-center;" />
+            <ui:VisualElement name="UIStats" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

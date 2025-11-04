@@ -1,0 +1,21 @@
+.title-Label {
+    border-top-width: 350px;
+    border-bottom-width: 50px;
+}
+
+.menu-buttons {
+    margin-bottom: 20px;
+    margin-top: 20px;
+    padding-top: 15px;
+    padding-right: 15px;
+    padding-bottom: 15px;
+    padding-left: 15px;
+    font-size: 45px;
+    -unity-text-align: upper-center;
+}
+
+.menu-buttons:hover {
+}
+
+.menuTitle-label {
+}
