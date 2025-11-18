@@ -5,23 +5,21 @@ using UnityEngine.UI;
 
 public class InputManager : MonoBehaviour,Inputs.IPlayerActions
 {
+    [SerializeField] private Inputs inputs;
 
-    private Inputs inputs;
-
-    void Awake()
+    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    void Start()
     {
         try
         {
             inputs = new Inputs();
-
             inputs.Player.SetCallbacks(this);
             inputs.Player.Enable();
         }
-        catch (Exception exception) 
+        catch (Exception exception)
         {
-            Debug.LogError("Input error" + exception);
+            Debug.Log("input error " + exception);
         }
-        
     }
 
     #region Input Events
@@ -30,55 +28,24 @@ public class InputManager : MonoBehaviour,Inputs.IPlayerActions
 
     public event Action<Vector2> LookInputEvent;
 
-    public event Action<InputAction.CallbackContext> JumpInputEvent;
-    public event Action<InputAction.CallbackContext> SprintInputEvent;
-    public event Action<InputAction.CallbackContext> CrouchInputEvent;
-    public event Action<InputAction.CallbackContext> InteractInputEvent;
+    public event Action<InputAction.CallbackContext> AttackInputEvent;
 
     #endregion
-
-    #region Input Callbacks
-
-    public void OnMove(InputAction.CallbackContext context)
-    {
-        MoveInputEvent?.Invoke(context.ReadValue<Vector2>());
-    }
 
     public void OnLook(InputAction.CallbackContext context)
     {
         LookInputEvent?.Invoke(context.ReadValue<Vector2>());
     }
 
-    public void OnJump(InputAction.CallbackContext context)
+    public void OnMove(InputAction.CallbackContext context)
     {
-        if (context.started)
-        {
-            JumpInputEvent?.Invoke(context);
-        }
-        if (context.performed)
-        {
-            Debug.Log("Jump performed");
-        }
-
+        MoveInputEvent?.Invoke(context.ReadValue<Vector2>());
     }
 
-    public void OnSprint(InputAction.CallbackContext context)
+    public void OnAttack(InputAction.CallbackContext context)
     {
-        SprintInputEvent?.Invoke(context);
+        AttackInputEvent?.Invoke(context);
     }
-
-    public void OnCrouch(InputAction.CallbackContext context)
-    {
-        CrouchInputEvent?.Invoke(context);
-    }
-
-    public void OnInteract(InputAction.CallbackContext context)
-    {
-        InteractInputEvent?.Invoke(context);
-    }
-
-    #endregion
-
 
     void OnEnable()
     {
