@@ -31,11 +31,11 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
-        HandleMovement();
+        //HandleMovement();
     }
     void FixedUpdate()
     {
-        HandleLook();
+        //HandleLook();
     }
 
     public void HandleMovement()
