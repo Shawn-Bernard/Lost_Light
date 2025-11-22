@@ -16,13 +16,9 @@ public class GameplayState : IState
     {
         Time.timeScale = 1;
 
-        Debug.Log("Entered gameplay state");
-
         gameManager.UIManager.EnableGameplayMenu();
 
         Cursor.visible = false;
-
-        //gameManager.PlayerController.GroundedCheck();
     }
 
     public void FixedUpdateState()

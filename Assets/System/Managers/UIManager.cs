@@ -51,19 +51,19 @@ public class UIManager : MonoBehaviour
     {
         UIDocument[] documents = Object.FindObjectsByType<UIDocument>(FindObjectsInactive.Include, FindObjectsSortMode.None);
 
-        foreach (var doc in documents)
+        foreach (UIDocument doc in documents)
         {
             if (doc.name == name)
             {
-                Debug.Log($"UI {doc} - {name} was found");
+                //Debug.Log($"UI {doc} - {name} was found");
                 return doc;
             }
             else
             {
-                Debug.LogWarning($"UIDocument '{name}' not found in scene.");
+                //Debug.LogWarning($"UIDocument '{name}' not found in scene.");
             }
         }
-        Debug.LogWarning($"UIDocument '{name}' not found in scene.");
+        //Debug.LogWarning($"UIDocument '{name}' not found in scene.");
         return null;
     }
 }

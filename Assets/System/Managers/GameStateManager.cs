@@ -1,3 +1,4 @@
+using Unity.Loading;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -17,13 +18,14 @@ public class GameStateManager : MonoBehaviour
     public GameplayState gameplayState = GameplayState.Instance;
     public PauseState pauseState = PauseState.Instance;
     public GameOverState gameoverState = GameOverState.Instance;
+    public BootLoadState bootLoadState = BootLoadState.Instance;
 
     #endregion
     #region State Machine Updates
     private void Start()
     {
         LastActiveState = currentActiveState;
-        currentState = gameplayState;
+        currentState = bootLoadState;
         currentState.EnterState();
         currentActiveState = currentState.ToString();
     }
@@ -31,7 +33,7 @@ public class GameStateManager : MonoBehaviour
     {
         currentState.FixedUpdateState();
     }
-    
+
     private void Update()
     {
         currentState.UpdateState();
@@ -44,13 +46,12 @@ public class GameStateManager : MonoBehaviour
 
     #endregion
 
-    public void SwitchStates(IState newState)
+    private void SwitchStates(IState newState)
     {
         lastState = currentState;
         LastActiveState = currentState.ToString();
 
         currentState?.ExitState();
-
 
         currentState = newState;
         currentActiveState = currentState.ToString();
@@ -58,51 +59,26 @@ public class GameStateManager : MonoBehaviour
         currentState.EnterState();
     }
 
-    #region Button Call Methods
-
-    public void StartGame()
-    {
-        SwitchStates(gameplayState);
-        gameManager.LevelManager.LoadSceneWithSpawnPoint("Level1", "SpawnPoint");
-    }
-    public void Pause()
-    {
-        if (currentState != gameplayState)
-        {
-            return;
-        }
-
-        if (currentState == gameplayState)
-        {
-            SwitchStates(pauseState);
-            return;
-        }
-        
-    }
-
-    public void Resume()
-    {
-        if (currentState != pauseState)
-        {
-            return;
-        }
-
-        if (currentState == pauseState)
-        {
-            SwitchStates(gameplayState);
-        }
-        
-    }
-    public void MainMenu()
+    public void SwitchToMainMenu()
     {
         SwitchStates(mainMenuState);
     }
-    public void Qut()
+    public void SwitchToGameplay()
     {
-        Application.Quit();
+        SwitchStates(gameplayState);
+    }
+    public void SwitchToPause()
+    {
+        SwitchStates(pauseState);
     }
 
-
-    #endregion
+    public void SwitchToGameOver()
+    {
+        SwitchStates(gameoverState);
+    }
+    public void SwitchToBootLoader()
+    {
+        SwitchStates(bootLoadState);
+    }
 
 }

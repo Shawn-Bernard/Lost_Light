@@ -13,18 +13,11 @@ public class MainMenuController : MonoBehaviour
 
     LevelManager levelManager => GameManager.instance.LevelManager;
 
+    GameStateManager gameStateManager => GameManager.instance.GameStateManager;
+
     private Button startButton;
     private Button optionButton;
     private Button quitButton;
-
-    private Button[] menubuttons;
-    private int focusedIndex = 0;
-
-    #region Setup button references and listeners
-
-
-
-    #endregion
 
     private void OnEnable()
     {
@@ -46,16 +39,16 @@ public class MainMenuController : MonoBehaviour
 
     private void PlayButton()
     {
-        //levelManager.LoadScene("Level_1");
-        Debug.Log("Play button was pressed");
+        levelManager.LoadLevel();
+        gameStateManager.SwitchToGameplay();
     }
 
     private void OptionButton()
     {
-        Debug.Log("option button was pressed");
+        //uiManager.en
     }
     private void QuitButton()
     {
-        Debug.Log("quit button was pressed");
+        Application.Quit();
     }
 }

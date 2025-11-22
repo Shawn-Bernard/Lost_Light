@@ -14,8 +14,7 @@ public class MainMenuState : IState
     #endregion
     public void EnterState()
     {
-        //Time.timeScale = 0;
-        gameManager.LevelManager.LoadScene("MainMenu");
+        //gameManager.LevelManager.LoadMainMenu();
         gameManager.UIManager.EnableMainMenu();
     }
 
@@ -35,6 +34,6 @@ public class MainMenuState : IState
 
     public void ExitState()
     {
-
+        //gameManager.PlayerController.gameObject.SetActive(false);
     }
 }

@@ -9,7 +9,7 @@ public class TriggerStateSwitch : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            GameManager.instance.GameStateManager.SwitchStates(GameManager.instance.GameStateManager.gameoverState);
+            GameManager.instance.GameStateManager.SwitchToGameOver();
         }
         
     }

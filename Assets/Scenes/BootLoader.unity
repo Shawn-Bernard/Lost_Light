@@ -171,6 +171,38 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2367359281079945167, guid: a33b2bb9e40da2544a03a60ba0500842, type: 3}
+      propertyPath: positon.y
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 3042518956391564185, guid: a33b2bb9e40da2544a03a60ba0500842, type: 3}
+      propertyPath: m_Name
+      value: PlayerModel
+      objectReference: {fileID: 0}
+    - target: {fileID: 3042518956391564185, guid: a33b2bb9e40da2544a03a60ba0500842, type: 3}
+      propertyPath: m_TagString
+      value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 3059837348275076527, guid: a33b2bb9e40da2544a03a60ba0500842, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3059837348275076527, guid: a33b2bb9e40da2544a03a60ba0500842, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3059837348275076527, guid: a33b2bb9e40da2544a03a60ba0500842, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3059837348275076527, guid: a33b2bb9e40da2544a03a60ba0500842, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3059837348275076527, guid: a33b2bb9e40da2544a03a60ba0500842, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6178627183831416628, guid: a33b2bb9e40da2544a03a60ba0500842, type: 3}
       propertyPath: m_Name
       value: GameManager

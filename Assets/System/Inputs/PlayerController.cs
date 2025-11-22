@@ -5,37 +5,25 @@ using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
-    [SerializeField] InputManager inputManager = GameManager.instance.InputManager;
-
-    [SerializeField] private float walkSpeed = 5f;
-    [SerializeField] private float currentSpeed = 5f;
+    [SerializeField] InputManager inputManager;
+    [SerializeField] private float speed = 5f;
     [SerializeField] private float mouseSensitivity = 5f;
+    
 
-    private Vector3 velocity;
 
-    private CharacterController characterController;
+    [SerializeField] private CharacterController characterController;
 
     [SerializeField] private Vector2 moveInput;
 
     [SerializeField] private Vector2 lookInput;
 
-    public GameObject attackModel;
+    public Vector3 positon;
 
     private void Awake()
     {
         characterController = GetComponent<CharacterController>();
-    }
-    void Start()
-    {
-    }
+        inputManager = GameManager.instance.InputManager;
 
-    private void Update()
-    {
-        //HandleMovement();
-    }
-    void FixedUpdate()
-    {
-        //HandleLook();
     }
 
     public void HandleMovement()
@@ -44,7 +32,7 @@ public class PlayerController : MonoBehaviour
         Vector3 worldMoveDirection = transform.TransformDirection(moveInputDirection);
 
 
-        Vector3 horizontalMoveDirection = worldMoveDirection * currentSpeed;
+        Vector3 horizontalMoveDirection = worldMoveDirection * speed;
 
         Vector3 movement = horizontalMoveDirection;
 
@@ -71,13 +59,26 @@ public class PlayerController : MonoBehaviour
     {
         if (context.started)
         {
-            Instantiate(attackModel, transform.position + Vector3.forward, Quaternion.identity);
             if (Physics.Raycast(transform.position, transform.position + Vector3.forward, out RaycastHit hitInfo, 5f))
             {
-                //Debug.Log("Player hit");
+                Debug.Log($"Shot has hit {hitInfo.collider.gameObject.name}");
+                if (hitInfo.collider.CompareTag("Enemy"))
+                {
+                    Enemy enemy = hitInfo.collider.GetComponent<Enemy>();
+                    enemy.Death();
+                }
             }
-            Debug.Log("Attack button");
         }
+    }
+    /// <summary>
+    /// This disables characterController and then moves player into position and re-enables it  
+    /// </summary>
+    /// <param name="setPosition"></param>
+    public void MovePlayer(Vector3 setPosition)
+    {
+        characterController.enabled = false;
+        transform.position = setPosition;
+        characterController.enabled = true;
     }
 
     private void OnEnable()

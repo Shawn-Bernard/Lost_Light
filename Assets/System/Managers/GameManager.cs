@@ -23,7 +23,6 @@ public class GameManager : MonoBehaviour
     public UIManager UIManager => uiManager;
 
     public LevelManager LevelManager => levelManager;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
     {
         #region Singleton
@@ -45,11 +44,6 @@ public class GameManager : MonoBehaviour
         }
 
         #endregion
-
-        if (inputManager == null)
-        {
-            inputManager = GetComponentInChildren<InputManager>();
-        }
         
     }
 }
