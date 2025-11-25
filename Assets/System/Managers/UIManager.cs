@@ -6,12 +6,22 @@ public class UIManager : MonoBehaviour
     [SerializeField] private UIDocument mainMenuUI;
     [SerializeField] private UIDocument gameplayMenuUI;
     [SerializeField] private UIDocument pauseMenuUI;
-    //[SerializeField] private UIDocument gameOverMenuUI;
+    [SerializeField] private UIDocument gameOverMenuUI;
+
+    [Header("UI Menu Controllers")]
+    public GameplayMenuController gameplayMenuController;
+    public GameOverController GameOverController;
     private void Awake()
     {
-        mainMenuUI = FindUIDocument("MainMenu");
-        gameplayMenuUI = FindUIDocument("GameplayMenu");
-        pauseMenuUI = FindUIDocument("PauseMenu");
+        #region UI Document Check
+        mainMenuUI ??= FindUIDocument("MainMenu");
+        gameplayMenuUI ??= FindUIDocument("GameplayMenu");
+        pauseMenuUI ??= FindUIDocument("PauseMenu");
+        //optionsMenuUI ??= FindUIDocument("OptionsMenu");
+        gameOverMenuUI ??= FindUIDocument("GameOverMenu");
+        #endregion
+
+        gameplayMenuController ??= GetComponentInChildren<GameplayMenuController>();
         DisableAllMenus();
     }
 
@@ -20,7 +30,7 @@ public class UIManager : MonoBehaviour
         mainMenuUI.rootVisualElement.style.display = DisplayStyle.None;
         pauseMenuUI.rootVisualElement.style.display = DisplayStyle.None;
         gameplayMenuUI.rootVisualElement.style.display = DisplayStyle.None;
-        //gameOverMenuUI.rootVisualElement.style.display = DisplayStyle.None;
+        gameOverMenuUI.rootVisualElement.style.display = DisplayStyle.None;
     }
 
     public void EnableMainMenu()
@@ -44,7 +54,7 @@ public class UIManager : MonoBehaviour
     public void EnableGameOverMenu()
     {
         DisableAllMenus();
-        //gameOverMenuUI.rootVisualElement.style.display = DisplayStyle.Flex;
+        gameOverMenuUI.rootVisualElement.style.display = DisplayStyle.Flex;
     }
 
     private UIDocument FindUIDocument(string name)

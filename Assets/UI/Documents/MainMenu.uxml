@@ -1,0 +1,13 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI/StyleSheet/Menu.uss?fileID=7433441132597879392&amp;guid=1c95ee472879d6243a1a27c879616f5c&amp;type=3#Menu" />
+    <ui:VisualElement name="MainMenu" style="flex-grow: 1; align-self: center;">
+        <ui:VisualElement name="CenterPanel" style="flex-grow: 1; flex-direction: column; flex-wrap: nowrap; width: 100%; height: 0; justify-content: flex-start; align-items: center;">
+            <ui:Label name="TitleLabel" text="Lost Light" class="title-Label" style="font-size: 54px; -unity-text-align: upper-center;" />
+            <ui:VisualElement name="MenuButtons">
+                <ui:Button text="Continue" name="ContinueButton" enabled="true" class="menu-buttons" style="width: 300px; align-items: stretch;" />
+                <ui:Button text="New Game" name="NewGameButton" class="menu-buttons" style="width: 300px; align-items: stretch;" />
+                <ui:Button text="Quit" name="QuitButton" class="menu-buttons" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

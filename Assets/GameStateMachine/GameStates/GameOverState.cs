@@ -13,6 +13,7 @@ public class GameOverState : IState
     #endregion
     public void EnterState()
     {
+        Time.timeScale = 0;
         gameManager.UIManager.EnableGameOverMenu();
     }
 

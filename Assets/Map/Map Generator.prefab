@@ -329,21 +329,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 918664b3ebe16c44ab3026d561403531, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 0}
-  PositionOffset: -1.5
-  is2D: 0
-  width: 79
-  height: 70
-  seed: 
-  useRandomSeed: 1
-  randomFillPercent: 50
-  mapSmooth: 5
-  passageRadius: 6
-  squareSize: 1
-  borderSize: 5
-  wallThresHoldSize: 50
-  roomThresHoldSize: 50
-  spawnObject: {fileID: 0}
+  mapSetting: {fileID: 11400000, guid: 1f9a062852262d64ea1a0ae9aee104c1, type: 2}
 --- !u!114 &4031534090493989859
 MonoBehaviour:
   m_ObjectHideFlags: 0

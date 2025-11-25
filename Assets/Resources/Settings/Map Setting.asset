@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e3ecd8b100acf984d855ece0bc5c91ee, type: 3}
+  m_Name: Map Setting
+  m_EditorClassIdentifier: 
+  defaultWidth: 70
+  width: 70
+  defaultHeight: 70
+  height: 70
+  seed: -1559510483
+  randomFillPercent: 50
+  mapSmooth: 5
+  passageRadius: 5
+  squareSize: 1
+  borderSize: 5
+  wallThresHoldSize: 50
+  roomThresHoldSize: 30

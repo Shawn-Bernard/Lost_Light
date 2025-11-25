@@ -3,7 +3,7 @@ using UnityEngine.UIElements;
 
 public class MainMenuController : MonoBehaviour
 {
-    private UIDocument menuUI => GetComponent<UIDocument>();
+    private UIDocument menuUI;
 
     GameManager gameManager => GameManager.instance;
 
@@ -14,40 +14,54 @@ public class MainMenuController : MonoBehaviour
     LevelManager levelManager => GameManager.instance.LevelManager;
 
     GameStateManager gameStateManager => GameManager.instance.GameStateManager;
-
-    private Button startButton;
-    private Button optionButton;
+    private Button continueButton;
+    private Button newGameButton;
     private Button quitButton;
+    private void Awake()
+    {
+        menuUI = GetComponent<UIDocument>();
+        continueButton = menuUI.rootVisualElement.Q<Button>("ContinueButton");
+        newGameButton = menuUI.rootVisualElement.Q<Button>("NewGameButton");
+        quitButton = menuUI.rootVisualElement.Q<Button>("QuitButton");
+    }
+
+    private void Update()
+    {
+        if (SaveSystem.SaveFileExists())
+        {
+            continueButton.style.display = DisplayStyle.Flex;
+        }
+        else
+        {
+            continueButton.style.display = DisplayStyle.None;
+        }
+    }
 
     private void OnEnable()
     {
-        startButton = menuUI.rootVisualElement.Q<Button>("PlayButton");
-        optionButton = menuUI.rootVisualElement.Q<Button>("OptionButton");
-        quitButton = menuUI.rootVisualElement.Q<Button>("QuitButton");
-
-        startButton.clicked += PlayButton;
-        optionButton.clicked += OptionButton;
-        quitButton.clicked += QuitButton;
+        continueButton.clicked += Continue;
+        newGameButton.clicked += NewGame;
+        quitButton.clicked += Quit;
     }
 
-    private void OnDisable()
+    private void NewGame()
     {
-        startButton.clicked -= PlayButton;
-        optionButton.clicked -= OptionButton;
-        quitButton.clicked -= QuitButton;
-    }
-
-    private void PlayButton()
-    {
+        SaveSystem.ResetGame();
         levelManager.LoadLevel();
         gameStateManager.SwitchToGameplay();
     }
 
-    private void OptionButton()
+    private void Continue()
     {
-        //uiManager.en
+        if (SaveSystem.SaveFileExists())
+        {
+            SaveSystem.Load();
+            levelManager.LoadLevel();
+            gameStateManager.SwitchToGameplay();
+        }
     }
-    private void QuitButton()
+
+    private void Quit()
     {
         Application.Quit();
     }

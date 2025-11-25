@@ -1,4 +1,5 @@
 using Unity.Loading;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -57,6 +58,11 @@ public class GameStateManager : MonoBehaviour
         currentActiveState = currentState.ToString();
 
         currentState.EnterState();
+    }
+
+    public bool IsInGameplay()
+    {
+        return currentState == gameplayState;
     }
 
     public void SwitchToMainMenu()

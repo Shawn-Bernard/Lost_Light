@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
-public class InputManager : MonoBehaviour,Inputs.IPlayerActions
+public class InputManager : MonoBehaviour, Inputs.IPlayerActions
 {
     [SerializeField] private Inputs inputs;
 
@@ -30,6 +30,8 @@ public class InputManager : MonoBehaviour,Inputs.IPlayerActions
 
     public event Action<InputAction.CallbackContext> AttackInputEvent;
 
+    public event Action<InputAction.CallbackContext> PauseInputEvent;
+
     #endregion
 
     public void OnLook(InputAction.CallbackContext context)
@@ -45,6 +47,10 @@ public class InputManager : MonoBehaviour,Inputs.IPlayerActions
     public void OnAttack(InputAction.CallbackContext context)
     {
         AttackInputEvent?.Invoke(context);
+    }
+    public void OnPause(InputAction.CallbackContext context)
+    {
+        PauseInputEvent?.Invoke(context);
     }
 
     void OnEnable()

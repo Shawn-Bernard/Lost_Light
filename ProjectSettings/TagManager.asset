@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Enemy
   - SpawnPoint
+  - Battery
   layers:
   - Default
   - TransparentFX

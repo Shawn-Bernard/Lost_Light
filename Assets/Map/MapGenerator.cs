@@ -2,62 +2,69 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 public class MapGenerator : MonoBehaviour
 {
-    [Header("Player setting")]
-    public PlayerController player;
-    public float PositionOffset = -1.5f;
 
     [Header("Map Settings")]
-    public bool is2D = false;
-    public int width = 50;
-    public int height = 50;
+    [SerializeField] MapSetting mapSetting;
+    private int width;
+    private int height;
 
-    public string seed;
-    public bool useRandomSeed = true;
+    private string seed;
 
-    [Range(0,100)]
-    public int randomFillPercent = 45;
+    private int randomFillPercent;
 
-    [Range(0, 10)]
-    public int mapSmooth = 5;
+    private int mapSmooth;
 
-    [Range(0, 10)]
-    public int passageRadius = 5;
+    private int passageRadius;
+    private int squareSize;
 
-    [Range(0, 10)]
-    public int squareSize = 1;
+    private int[,] map;
 
-    int[,] map;
+    private int borderSize;
+    private int wallThresHoldSize;
+    private int roomThresHoldSize;
 
-    [SerializeField] int borderSize = 5;
+    [SerializeField] GameObject ground;
 
-    [Range(0, 100)]
-    public int wallThresHoldSize = 50; // Less = more smaller walls
-    [Range(0, 100)]
-    public int roomThresHoldSize = 50; // Less = more smaller rooms
-
-    [SerializeField] private Room mainRoom;
-
-    List<Room> survivingRooms;
-
-    public GameObject spawnObject;
+    private Room mainRoom;
+    private List<Room> survivingRooms = new List<Room>();
 
     void Awake()
     {
+        ApplySetting();
         GenerateMap();
+        ground.transform.localScale = new Vector3(width, 1, height);
     }
-
-    private void Update()
+    void ApplySetting()
     {
-        if (Keyboard.current[Key.Enter].wasPressedThisFrame)
+        width = mapSetting.width;
+        height = mapSetting.height;
+        if (SaveSystem.SaveFileExists() && !string.IsNullOrEmpty(mapSetting.seed))
         {
-            
+            Debug.Log("Using data seed");
+            seed = mapSetting.seed;
         }
+        else
+        {
+            Debug.Log("Using bad seed");
+            seed = UnityEngine.Random.Range(int.MinValue, int.MaxValue).ToString();
+        }
+        randomFillPercent = mapSetting.randomFillPercent;
+        mapSmooth = mapSetting.mapSmooth;
+        passageRadius = mapSetting.passageRadius;
+        squareSize = mapSetting.squareSize;
+        borderSize = mapSetting.borderSize;
+        wallThresHoldSize = mapSetting.wallThresHoldSize;
+        roomThresHoldSize = mapSetting.roomThresHoldSize;
+
+        mapSetting.width = width;
+        mapSetting.height = height;
+        mapSetting.seed = seed;
     }
 
+    #region Map Logic
     public Vector3 GetPositionInsideMap()
     {
         Room room;
@@ -92,6 +99,8 @@ public class MapGenerator : MonoBehaviour
     /// </summary>
     void GenerateMap()
     {
+        Debug.Log($"seed {seed}");
+        mapSetting.seed = seed;
         map = new int[width, height];
         RandomFillMap();
 
@@ -449,10 +458,6 @@ public class MapGenerator : MonoBehaviour
 	}
     void RandomFillMap()
     {
-        if (useRandomSeed)
-        {
-            seed = Time.time.ToString();
-        }
         // pseudo random number generator
         System.Random prng = new System.Random(seed.GetHashCode());
 
@@ -523,6 +528,9 @@ public class MapGenerator : MonoBehaviour
         return wallCount;
     }
 
+    #endregion
+
+    #region Map Structs
     struct Coord
     {
         public int tileX;
@@ -610,4 +618,12 @@ public class MapGenerator : MonoBehaviour
         }
         
     }
+    #endregion
+}
+[System.Serializable]
+public struct MapData
+{
+    public int width;
+    public int height;
+    public string seed;
 }

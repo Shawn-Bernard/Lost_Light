@@ -14,7 +14,7 @@ public class PauseState : IState
     #endregion
     public void EnterState()
     {
-        //Time.timeScale = 0;
+        Time.timeScale = 0;
         gameManager.UIManager.EnablePauseMenu();
     }
 

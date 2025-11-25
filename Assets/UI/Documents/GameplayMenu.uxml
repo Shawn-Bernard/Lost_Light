@@ -1,17 +1,17 @@
 <ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
-    <Style src="project://database/Assets/UI/StyleSheet/GameplayMenu.uss?fileID=7433441132597879392&amp;guid=d168e5d45a927444492c276b3c8c053d&amp;type=3#GameplayMenu" />
+    <Style src="project://database/Assets/UI/StyleSheet/Menu.uss?fileID=7433441132597879392&amp;guid=1c95ee472879d6243a1a27c879616f5c&amp;type=3#Menu" />
     <ui:VisualElement name="GameplayUI" style="flex-grow: 1; flex-direction: column;">
         <ui:VisualElement name="LeftPanel" style="flex-grow: 1; flex-direction: column; flex-wrap: nowrap; width: 33%; height: 100%; justify-content: flex-start; align-items: center; right: 67%; position: absolute;">
-            <ui:Label name="ScoreUI" text="Score :" class="title-Label" style="font-size: 54px; -unity-text-align: upper-center; position: absolute;" />
-            <ui:Label name="BatteryCountUI" text="Batteries :" class="title-Label" style="font-size: 45%; -unity-text-align: upper-left; left: 2%; top: 91%; bottom: auto; width: 100%; margin-left: 2%; margin-right: 2%;" />
+            <ui:Label name="ScoreUI" text="Score :" class="title-Label gameplay-Label" style="-unity-text-align: lower-center; left: 5%; position: absolute; top: auto; bottom: 91%;" />
+            <ui:Label name="BatteryCountUI" text="Batteries :" class="title-Label gameplay-Label" style="position: absolute; top: 91%; left: 5%;" />
             <ui:VisualElement name="UIStats" />
         </ui:VisualElement>
         <ui:VisualElement name="CenterPanel" style="flex-grow: 1; flex-direction: column; flex-wrap: nowrap; width: 33%; height: 100%; justify-content: flex-start; align-items: center; right: 33%; position: absolute;">
             <ui:VisualElement name="UIStats" />
-            <ui:ProgressBar value="2.7" title="Battery Life" style="top: 88%; align-items: stretch; width: 90%; height: auto; margin-left: 0%; margin-right: 0%; left: 2%; bottom: -30px; flex-basis: auto; flex-shrink: initial; flex-grow: initial; opacity: 1; display: flex; visibility: visible; overflow: visible; min-width: auto;" />
+            <ui:ProgressBar value="2.7" title="Battery Life" name="BatteryLife" style="top: 92%; align-items: stretch; margin-left: 0%; margin-right: 0%; left: auto; bottom: auto; flex-basis: auto; flex-shrink: initial; flex-grow: initial; position: absolute;" />
+            <ui:Label name="TimerUI" text="Timer [0:00]" class="gameplay-Label" style="position: absolute; top: auto; bottom: 91%;" />
         </ui:VisualElement>
         <ui:VisualElement name="RightPanel" style="flex-grow: 1; flex-direction: column; flex-wrap: nowrap; width: 33%; height: 100%; justify-content: flex-start; align-items: center; right: 0%; top: 0%; position: absolute;">
-            <ui:Label name="ScoreUI" text="Score :" class="title-Label" style="font-size: 54px; -unity-text-align: upper-center;" />
             <ui:VisualElement name="UIStats" />
         </ui:VisualElement>
     </ui:VisualElement>

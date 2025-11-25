@@ -17,5 +17,38 @@
 .menu-buttons:hover {
 }
 
-.menuTitle-label {
+.menuTitle-Label {
+}
+
+.gameplay-Label {
+    font-size: 40px;
+    border-top-width: 0;
+    border-bottom-width: 0;
+}
+
+.unity-progress-bar {
+    height: auto;
+    margin-bottom: 0;
+    -unity-font-style: normal;
+    font-size: 20px;
+    width: 100%;
+}
+
+.unity-progress-bar__container {
+    min-height: 40px;
+    height: 40px;
+    border-bottom-width: 1px;
+}
+
+.unity-progress-bar__progress {
+    background-color: rgb(4, 125, 0);
+}
+
+.gameoverTitle-Label {
+    padding-top: 4px;
+    font-size: 100px;
+}
+
+.gameoverScore-Label {
+    font-size: 35px;
 }
