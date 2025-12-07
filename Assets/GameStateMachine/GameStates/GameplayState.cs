@@ -21,8 +21,8 @@ public class GameplayState : IState
     {
         gameManager.UIManager.EnableGameplayMenu();
         Time.timeScale = 1;
-        
-        
+
+        Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Confined;
         playerController ??= gameManager.PlayerController;
     }

@@ -12,15 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3ecd8b100acf984d855ece0bc5c91ee, type: 3}
   m_Name: Map Setting
   m_EditorClassIdentifier: 
-  defaultWidth: 70
-  width: 70
+  defaultWidth: 85
+  width: 85
   defaultHeight: 70
   height: 70
-  seed: -696162686
+  seed: -884776479
   randomFillPercent: 50
   mapSmooth: 5
   passageRadius: 6
-  squareSize: 1
-  borderSize: 5
-  wallThresHoldSize: 50
-  roomThresHoldSize: 30
+  squareSize: 2
+  borderSize: 4
+  wallThresHoldSize: 35
+  roomThresHoldSize: 35

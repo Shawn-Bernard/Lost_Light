@@ -64,6 +64,8 @@ public class BatteryController : MonoBehaviour
     {
         currentBatteryCount--;
         batteryLife = maxBatteryLife;
+
+        UpdateBatteryCount();
         EmptyBatteryCheck();
     }
 

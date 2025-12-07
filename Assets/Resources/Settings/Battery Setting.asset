@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Battery Setting
   m_EditorClassIdentifier: 
   defaultStartBatteryCount: 4
-  startBatteryCount: 4
-  batteryCapacity: 5
+  startBatteryCount: 3
+  batteryCapacity: 7
   maxBatteryLife: 100
-  drainRate: 2
+  drainRate: 4

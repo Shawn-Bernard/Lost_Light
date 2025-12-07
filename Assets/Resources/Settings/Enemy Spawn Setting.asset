@@ -17,4 +17,4 @@ MonoBehaviour:
   objectPerWave: 1
   increasePerWave: 2
   maxSpawnedObject: 20
-  spawnedPrefab: {fileID: 3651191395754800545, guid: b92960fe84e6a9647b9d5f925cec6508, type: 3}
+  spawnedPrefab: {fileID: 141014, guid: e8a98f96516902e4384263b5d25a25c6, type: 3}

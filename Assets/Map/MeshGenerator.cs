@@ -3,12 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using System;
 using Unity.AI.Navigation;
-[RequireComponent(typeof(NavMeshSurface))]
 public class MeshGenerator : MonoBehaviour
 {
     public MeshFilter walls;
     public MeshFilter cave;
-    private NavMeshSurface navMesh;
 
     [SerializeField] private int wallHeight = 5;
 
@@ -22,14 +20,9 @@ public class MeshGenerator : MonoBehaviour
 
     private List<List<int>> outlines = new List<List<int>>();
     HashSet<int> checkedVertices = new HashSet<int>();
-    private void Awake()
-    {
-        navMesh = GetComponent<NavMeshSurface>();
-    }
 
     public void GenerateMesh(int[,] map, float squareSize) 
     {
-        navMesh.AddData();
         triangleDictionary.Clear();
         outlines.Clear();
         checkedVertices.Clear();
@@ -63,7 +56,6 @@ public class MeshGenerator : MonoBehaviour
         }
         mesh.uv = uvs;
         CreateWallMesh();
-        navMesh.BuildNavMesh();
     }
 
     void CreateWallMesh()

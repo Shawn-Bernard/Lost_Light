@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[DefaultExecutionOrder(-100)]
 public class MapGenerator : MonoBehaviour
 {
 
@@ -30,12 +31,10 @@ public class MapGenerator : MonoBehaviour
 
     private Room mainRoom;
     private List<Room> survivingRooms = new List<Room>();
-
     void Start()
     {
         ApplySetting();
-        GenerateMap();
-        ground.transform.localScale = new Vector3(width/ 10, 1, height/10);
+        ground.transform.localScale = new Vector3(width / 4, 1, height / 4);
     }
     void ApplySetting()
     {
@@ -60,6 +59,7 @@ public class MapGenerator : MonoBehaviour
         mapSetting.width = width;
         mapSetting.height = height;
         mapSetting.seed = seed;
+        GenerateMap();
     }
 
     #region Map Logic
@@ -86,7 +86,7 @@ public class MapGenerator : MonoBehaviour
                 }
                 if (isSafe)
                 {
-                    safePositions.Add(CoordToWorldPointForSpawning(tile));
+                    safePositions.Add(CoordToWorldPointForSpawning(tile) * 2);
                 }
             }
         }

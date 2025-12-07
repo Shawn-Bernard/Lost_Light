@@ -1,6 +1,7 @@
 .title-Label {
     border-top-width: 350px;
     border-bottom-width: 50px;
+    -unity-font-definition: url("project://database/Assets/Fonts/OserifItalic-G3Weq.ttf?fileID=12800000&guid=52ef21a1c2d8db343ae747731c97735c&type=3#OserifItalic-G3Weq");
 }
 
 .menu-buttons {
@@ -12,12 +13,16 @@
     padding-left: 15px;
     font-size: 45px;
     -unity-text-align: upper-center;
+    -unity-font-definition: url("project://database/Assets/Fonts/OserifItalic-G3Weq.ttf?fileID=12800000&guid=52ef21a1c2d8db343ae747731c97735c&type=3#OserifItalic-G3Weq");
+    transform-origin: center;
 }
 
 .menu-buttons:hover {
+    -unity-font-definition: url("project://database/Assets/Fonts/OserifItalic-G3Weq.ttf?fileID=12800000&guid=52ef21a1c2d8db343ae747731c97735c&type=3#OserifItalic-G3Weq");
 }
 
 .menuTitle-Label {
+    -unity-font-definition: url("project://database/Assets/Fonts/OserifItalic-G3Weq.ttf?fileID=12800000&guid=52ef21a1c2d8db343ae747731c97735c&type=3#OserifItalic-G3Weq");
 }
 
 .gameplay-Label {
@@ -29,6 +34,7 @@
     border-top-right-radius: 10%;
     border-bottom-right-radius: 10%;
     border-bottom-left-radius: 10%;
+    -unity-font-definition: url("project://database/Assets/Fonts/OserifItalic-G3Weq.ttf?fileID=12800000&guid=52ef21a1c2d8db343ae747731c97735c&type=3#OserifItalic-G3Weq");
 }
 
 .unity-progress-bar {
@@ -37,21 +43,25 @@
     -unity-font-style: normal;
     font-size: 20px;
     width: 100%;
+    -unity-font-definition: url("project://database/Assets/Fonts/OserifItalic-G3Weq.ttf?fileID=12800000&guid=52ef21a1c2d8db343ae747731c97735c&type=3#OserifItalic-G3Weq");
 }
 
 .unity-progress-bar__container {
     min-height: 40px;
     height: 40px;
     border-bottom-width: 1px;
+    -unity-font-definition: url("project://database/Assets/Fonts/OserifItalic-G3Weq.ttf?fileID=12800000&guid=52ef21a1c2d8db343ae747731c97735c&type=3#OserifItalic-G3Weq");
 }
 
 .unity-progress-bar__progress {
     background-color: rgb(4, 125, 0);
+    -unity-font-definition: url("project://database/Assets/Fonts/OserifItalic-G3Weq.ttf?fileID=12800000&guid=52ef21a1c2d8db343ae747731c97735c&type=3#OserifItalic-G3Weq");
 }
 
 .gameoverTitle-Label {
     padding-top: 4px;
     font-size: 100px;
+    -unity-font-definition: url("project://database/Assets/Fonts/OserifItalic-G3Weq.ttf?fileID=12800000&guid=52ef21a1c2d8db343ae747731c97735c&type=3#OserifItalic-G3Weq");
 }
 
 .gameoverScore-Label {
@@ -63,4 +73,5 @@
     border-top-right-radius: 10%;
     border-bottom-right-radius: 10%;
     border-bottom-left-radius: 10%;
+    -unity-font-definition: url("project://database/Assets/Fonts/OserifItalic-G3Weq.ttf?fileID=12800000&guid=52ef21a1c2d8db343ae747731c97735c&type=3#OserifItalic-G3Weq");
 }

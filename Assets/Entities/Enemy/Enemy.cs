@@ -5,7 +5,7 @@ public class Enemy : MonoBehaviour
 {
     [SerializeField] private EnemySetting enemySetting;
     [SerializeField] private SpawnDataContainer spawnDataContainer;
-    [SerializeField] private NavMeshAgent enemy;
+    [SerializeField] private NavMeshAgent navMeshAgent;
     [SerializeField] private PlayerController player;
 
     private int caughtRange;
@@ -14,11 +14,11 @@ public class Enemy : MonoBehaviour
 
     void Start()
     {
-        enemy ??= GetComponent<NavMeshAgent>();
+        navMeshAgent ??= GetComponent<NavMeshAgent>();
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
         caughtRange = enemySetting.caughtRange;
-        enemy.speed = Random.Range(enemySetting.minSpeed,enemySetting.maxSpeed);
-        enemy.angularSpeed = enemySetting.turnSpeed;
+        navMeshAgent.speed = Random.Range(enemySetting.minSpeed,enemySetting.maxSpeed);
+        navMeshAgent.angularSpeed = enemySetting.turnSpeed;
     }
 
     void Update()
@@ -30,9 +30,13 @@ public class Enemy : MonoBehaviour
     /// </summary>
     public void HandleAI()
     {
-        if (player != null) directionToPlayer = player.transform.position - transform.position;
+        if (player != null)
+        { 
+            directionToPlayer =  transform.position - player.transform.position;
+            transform.rotation = Quaternion.LookRotation(directionToPlayer);
+        }
         float distanceToPlayer = directionToPlayer.magnitude;
-        if (enemy != null) enemy.SetDestination(player.transform.position);
+        if (navMeshAgent != null) navMeshAgent.SetDestination(player.transform.position);
         if (distanceToPlayer <= caughtRange)
         {
             if (player != null)

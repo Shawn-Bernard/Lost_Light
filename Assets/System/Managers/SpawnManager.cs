@@ -21,7 +21,6 @@ public class SpawnManager : MonoBehaviour
     {
         mapGenerator ??= FindFirstObjectByType<MapGenerator>();
         player ??= FindAnyObjectByType<PlayerController>();
-        
     }
     private void Start()
     {

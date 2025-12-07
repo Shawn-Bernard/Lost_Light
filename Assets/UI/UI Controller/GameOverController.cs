@@ -33,11 +33,6 @@ public class GameOverController : MonoBehaviour
 
     }
 
-    private void Start()
-    {
-        
-    }
-
     private void OnEnable()
     {
         startOverButton.clicked += NewGame;
