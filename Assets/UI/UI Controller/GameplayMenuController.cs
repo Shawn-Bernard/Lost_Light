@@ -5,15 +5,15 @@ using UnityEngine.UIElements;
 
 public class GameplayMenuController : MonoBehaviour
 {
-    private UIDocument menuUI;
-
-    GameManager gameManager;
+    [SerializeField] private UIDocument gameplayMenu;
 
     [SerializeField] private UIManager uiManager;
 
-    InputManager inputManager => GameManager.instance.InputManager;
+    [SerializeField] private InputManager inputManager;
 
-    GameStateManager gameStateManager => GameManager.instance.GameStateManager;
+    [SerializeField] private GameStateManager gameStateManager;
+
+    [SerializeField] private GameOverController gameOverController;
 
     private ProgressBar batteryBar;
 
@@ -25,39 +25,40 @@ public class GameplayMenuController : MonoBehaviour
 
     private void Awake()
     {
-        gameManager = GameManager.instance;
-        menuUI = GetComponent<UIDocument>();
+        inputManager ??= GameManager.instance.InputManager;
+        gameStateManager ??= GameManager.instance.GameStateManager;
+        gameOverController ??= FindAnyObjectByType<GameOverController>();
+        gameplayMenu ??= GetComponent<UIDocument>();
     }
 
     private void OnEnable()
     {
         inputManager.PauseInputEvent += OpenPause;
-        scoreLabel = menuUI.rootVisualElement.Q<Label>("ScoreUI");
-        batteryBar = menuUI.rootVisualElement.Q<ProgressBar>("BatteryLife");
-        batteryCountLabel = menuUI.rootVisualElement.Q<Label>("BatteryCountUI");
-        TimerLabel = menuUI.rootVisualElement.Q<Label>("TimerUI");
+        scoreLabel = gameplayMenu.rootVisualElement.Q<Label>("ScoreUI");
+        batteryBar = gameplayMenu.rootVisualElement.Q<ProgressBar>("BatteryLife");
+        batteryCountLabel = gameplayMenu.rootVisualElement.Q<Label>("BatteryCountUI");
+        TimerLabel = gameplayMenu.rootVisualElement.Q<Label>("TimerUI");
     }
 
+    public void UpdateScore(int score, float time)
+    {
+        scoreLabel.text = $"Score : {score}";
+
+        int minutes = Mathf.FloorToInt(time / 60);
+        int seconds = Mathf.FloorToInt(time % 60);
+        TimerLabel.text = $"{minutes:00}:{seconds:00}";
+
+        gameOverController.UpdateScore(score, time);
+    }
+    public void UpdateBatteryCount(int totalBatteries)
+    {
+        batteryCountLabel.text = $"Battery : {totalBatteries}";
+    }
     public void UpdateBatteryLife(float batteryPercent)
     {
         batteryBar.value = batteryPercent;
 
         batteryBar.title = $"Battery Power {(int)batteryPercent}%";
-    }
-    public void UpdateTime(float time)
-    {
-        int minutes = Mathf.FloorToInt(time / 60);
-        int seconds = Mathf.FloorToInt(time % 60);
-        TimerLabel.text = $"{minutes:00}:{seconds:00}";
-    }
-
-    public void UpdateScore(int score)
-    {
-        scoreLabel.text = $"Score : {score}";
-    }
-    public void UpdateBatteryCount(int totalBatteries)
-    {
-        batteryCountLabel.text = $"Battery : {totalBatteries}";
     }
 
     public void OpenPause(InputAction.CallbackContext context)

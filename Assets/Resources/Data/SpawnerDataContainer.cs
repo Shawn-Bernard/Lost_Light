@@ -1,7 +1,5 @@
 using System.Collections.Generic;
-using UnityEditor.SearchService;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 [CreateAssetMenu(fileName = "Spawn Data", menuName = "Game Data/Spawn Data")]
 public class SpawnDataContainer : ScriptableObject
@@ -12,32 +10,31 @@ public class SpawnDataContainer : ScriptableObject
     public int enemiesToSpawn;
     public int batteriesToSpawn;
 
-    [HideInInspector] public List<Vector3> enemies = new List<Vector3>();
+    public int RangeCheck;
 
-    [HideInInspector] public List<Vector3> batteries = new List<Vector3>();
+    [HideInInspector] public List<GameObject> enemies = new List<GameObject>();
+    [HideInInspector] public List<Vector3> enemiesPosition = new List<Vector3>();
+
+    [HideInInspector] public List<GameObject> batteries = new List<GameObject>();
+    [HideInInspector] public List<Vector3> batteriesPosition = new List<Vector3>();
 
     public void ResetData()
     {
         enemiesToSpawn = enemySpawner.objectPerWave;
         batteriesToSpawn = batterySpawner.objectPerWave;
-        enemies.Clear();
-        batteries.Clear();
+        enemies = new List<GameObject>();
+        batteries = new List<GameObject>();
     }
 
     public void Save(ref SpawnerData data)
     {
         data.enemiesToSpawn = enemiesToSpawn;
-        data.batteriesToSpawn = batteriesToSpawn;
         List<EnemySaveData> enemyList = new List<EnemySaveData>();
-        foreach (var enemy in enemies)
+        foreach (GameObject enemy in enemies)
         {
-            if (enemy != null)
-            {
-                enemyList.Add(new EnemySaveData
-                {
-                    position = enemy
-                });
-            }
+            EnemySaveData enemySave = new EnemySaveData();
+            enemySave.position = enemy.transform.position;
+            enemyList.Add(enemySave);
         }
         data.Enemies = enemyList.ToArray();
 
@@ -48,7 +45,7 @@ public class SpawnDataContainer : ScriptableObject
             {
                 batteryList.Add(new BatterySaveData
                 {
-                    position = battery
+                    position = battery.transform.position
                 });
             }
         }
@@ -58,17 +55,19 @@ public class SpawnDataContainer : ScriptableObject
     public void Load(SpawnerData data)
     {
         enemiesToSpawn = data.enemiesToSpawn;
-        batteriesToSpawn = data.batteriesToSpawn;
-        enemies.Clear();
-        batteries.Clear();
+        enemies = new List<GameObject>();
+        enemiesPosition = new List<Vector3>();
+        batteries = new List<GameObject>();
+        batteriesPosition = new List<Vector3>();
 
-        foreach (var batPos in data.Enemies)
+        foreach (EnemySaveData enemy in data.Enemies)
         {
-            enemies.Add(batPos.position);
+            enemiesPosition.Add(enemy.position);
         }
-        foreach (var batPos in data.Batteries)
+
+        foreach (BatterySaveData battery in data.Batteries)
         {
-            batteries.Add(batPos.position);
+            batteriesPosition.Add(battery.position);
         }
     }
 }

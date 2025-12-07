@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b419a3a9928ccb54d8a5a28d809b5ecc, type: 3}
   m_Name: Battery Spawn Setting
   m_EditorClassIdentifier: 
-  spawnRate: 5
-  waveCooldown: 3
+  waveCooldown: 5
   canSpawn: 1
   objectPerWave: 1
-  IncreasePerWave: 1
+  increasePerWave: 2
+  maxSpawnedObject: 8
   spawnedPrefab: {fileID: 5645905082384488593, guid: 2662f0d7d28f59b4ba02a75f98f35b7c, type: 3}

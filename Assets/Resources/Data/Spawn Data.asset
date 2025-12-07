@@ -14,7 +14,27 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemySpawner: {fileID: 11400000, guid: 28e8a8fbdc4542f429e82006c7ac9c09, type: 2}
   batterySpawner: {fileID: 11400000, guid: 2a1d28283fde0c549a21a9c99ca1845e, type: 2}
-  enemiesToSpawn: 0
-  batteriesToSpawn: 0
-  enemies: []
-  batteries: []
+  enemiesToSpawn: 1
+  batteriesToSpawn: 1
+  RangeCheck: 10
+  enemies:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  enemiesPosition:
+  - {x: -4.7522426, y: 0.5833335, z: -10.221939}
+  - {x: -7.7003837, y: 0.5833335, z: 2.9902596}
+  - {x: -6.931123, y: 0.5833335, z: 1.0555142}
+  - {x: 11.233035, y: 0.5833335, z: 25.730663}
+  - {x: 19.121378, y: 0.5833335, z: 26.294996}
+  batteries:
+  - {fileID: 0}
+  - {fileID: 0}
+  batteriesPosition:
+  - {x: -4.5, y: 0, z: 18.5}
+  - {x: -20.5, y: 0, z: 26.5}
+  - {x: 29.5, y: 0, z: 14.5}
+  - {x: 4.5, y: 0, z: -14.5}
+  - {x: -28.5, y: 0, z: -13.5}
+  - {x: 23.5, y: 0, z: -23.5}

@@ -15,7 +15,4 @@ MonoBehaviour:
   maxSpeed: 3
   minSpeed: 1
   turnSpeed: 5
-  range: 6
-  coneAngle: 80
-  caughtRange: 2
-  searchRange: 20
+  caughtRange: 1

@@ -9,88 +9,105 @@ public class SpawnManager : MonoBehaviour
     [SerializeField] private SpawnSetting batterySpawner;
     [SerializeField] private SpawnDataContainer spawnDataContainer;
     [SerializeField] private MapGenerator mapGenerator;
-    [SerializeField] private PlayerSpawnPoint playerSpawn;
-
-    private List<GameObject> enemies = new List<GameObject>();
-
-    private List<GameObject> batteries = new List<GameObject>();
+    private Vector3 playerSpawn;
 
     [SerializeField] private int enemiesToSpawn;
-    [SerializeField] private int batteriesToSpawn;
+
+    private Vector3[] safePositions;
+    private PlayerController player;
+
 
     private void Awake()
     {
-        playerSpawn ??= Object.FindAnyObjectByType<PlayerSpawnPoint>();
         mapGenerator ??= FindFirstObjectByType<MapGenerator>();
-        SaveAndload();
-        enemiesToSpawn = enemySpawner.objectPerWave;
+        player ??= FindAnyObjectByType<PlayerController>();
+        
     }
-
-    private void SaveAndload()
-    {
-        enemySpawner = spawnDataContainer.enemySpawner;
-        batterySpawner = spawnDataContainer.batterySpawner;
-
-        enemiesToSpawn = spawnDataContainer.enemiesToSpawn;
-        batteriesToSpawn = spawnDataContainer.batteriesToSpawn;
-
-        spawnDataContainer.enemiesToSpawn = enemiesToSpawn;
-        spawnDataContainer.batteriesToSpawn = batteriesToSpawn;
-
-        if (SaveSystem.SaveFileExists())
-        {
-            foreach (Vector3 enemyPos in spawnDataContainer.enemies)
-            {
-                GameObject enemy = Instantiate(
-                    enemySpawner.spawnedPrefab,
-                    enemyPos,
-                    Quaternion.identity
-                );
-                enemies.Add(enemy);
-                enemy.name = "Enemy";
-            }
-
-            foreach (Vector3 batteryPos in spawnDataContainer.batteries)
-            {
-                GameObject battery = Instantiate(
-                    batterySpawner.spawnedPrefab,
-                    batteryPos,
-                    Quaternion.identity);
-                batteries.Add(battery);
-                battery.name = "Battery";
-            }
-        }
-    }
-
     private void Start()
     {
-        if (playerSpawn != null)
-        {
-            playerSpawn.transform.position = mapGenerator.GetPositionInsideMap();
-        }
+        safePositions = mapGenerator.GetPositionInsideMap();
+        SaveAndload();
         StartCoroutine(SpawnEnemies());
         StartCoroutine(SpawnBatteries());
     }
 
+    private Vector3 FindRandomSpawn()
+    {
+        int spawnIndex = Random.Range(0, safePositions.Length);
+        return safePositions[spawnIndex];
+    }
+
+    private bool CanSpawn(Vector3 positionToCheck)
+    {
+        return Vector3.Distance(positionToCheck, player.transform.position) >= spawnDataContainer.RangeCheck;
+    }
+
+    private void CheckAndSpawn(List<GameObject> listForObject, SpawnSetting spawnSetting)
+    {
+        Vector3 spawnPosition = FindRandomSpawn();
+
+        if (!CanSpawn(spawnPosition))
+        {
+            foreach (Vector3 position in safePositions)
+            {
+                if (CanSpawn(position))
+                {
+                    spawnPosition = position;
+                    break;
+                }
+            }
+        }
+        GameObject SpawnObject = spawnSetting.SpawnObject(spawnPosition);
+        listForObject.Add(SpawnObject);
+    } 
+
+    private void SaveAndload()
+    {
+        if (SaveSystem.SaveFileExists())
+        {
+            // If the save file does exists I use the list of positions and create and adds to the list
+            foreach (Vector3 enemy in spawnDataContainer.enemiesPosition)
+            {
+                spawnDataContainer.enemies.Add(enemySpawner.SpawnObject(enemy));
+            }
+            foreach (Vector3 battery in spawnDataContainer.batteriesPosition)
+            {
+                spawnDataContainer.batteries.Add(batterySpawner.SpawnObject(battery));
+            }
+        }
+        else
+        {
+            // If there is no save file then that means the player already has a saved spawn position
+            playerSpawn = FindRandomSpawn();
+            player.MovePlayer(playerSpawn);
+        }
+        enemySpawner = spawnDataContainer.enemySpawner;
+        batterySpawner = spawnDataContainer.batterySpawner;
+
+        enemiesToSpawn = spawnDataContainer.enemiesToSpawn;
+        
+
+        spawnDataContainer.enemiesToSpawn = enemiesToSpawn;
+    }
+
     private IEnumerator SpawnEnemies()
     {
+        yield return new WaitForSeconds(enemySpawner.waveCooldown);
         while (enemySpawner.canSpawn)
         {
-            for (int i = 0; i < enemiesToSpawn; i++)
+            if ((spawnDataContainer.enemies.Count + enemiesToSpawn) < enemySpawner.maxSpawnedObject)
             {
-                GameObject enemy = Instantiate(
-                    enemySpawner.spawnedPrefab,
-                    mapGenerator.GetPositionInsideMap(),
-                    Quaternion.identity
-                );
-                enemies.Add(enemy);
-                spawnDataContainer.enemies.Add(enemy.transform.position);
-                enemy.name = "Enemy";
+                for (int i = 0; i < enemiesToSpawn; i++)
+                {
+                    CheckAndSpawn(spawnDataContainer.enemies,enemySpawner);
+                }
+                // Increase wave size for next loop
+                enemiesToSpawn += enemySpawner.increasePerWave;
             }
-            // Increase wave size for next loop
-            enemiesToSpawn += enemySpawner.IncreasePerWave;
-            spawnDataContainer.enemiesToSpawn = enemiesToSpawn;
-
+            else
+            {
+                Debug.Log("Too much enemies " + spawnDataContainer.enemies.Count + enemiesToSpawn);
+            }
             // Wait between waves
             yield return new WaitForSeconds(enemySpawner.waveCooldown);
         }
@@ -98,16 +115,14 @@ public class SpawnManager : MonoBehaviour
 
     private IEnumerator SpawnBatteries()
     {
+        yield return new WaitForSeconds(batterySpawner.waveCooldown);
         while (batterySpawner.canSpawn)
         {
-            GameObject battery = Instantiate(
-                    batterySpawner.spawnedPrefab,
-                    mapGenerator.GetPositionInsideMap(),
-                    Quaternion.identity);
-            batteries.Add(battery);
-            spawnDataContainer.batteries.Add(battery.transform.position);
-            battery.name = "Battery";
-            yield return new WaitForSeconds(batterySpawner.spawnRate);
+            if (spawnDataContainer.batteries.Count <= batterySpawner.maxSpawnedObject)
+            {
+                CheckAndSpawn(spawnDataContainer.batteries, batterySpawner);
+            }
+            yield return new WaitForSeconds(batterySpawner.waveCooldown);
         }
     }
 }
@@ -116,7 +131,6 @@ public class SpawnManager : MonoBehaviour
 public struct SpawnerData
 {
     public int enemiesToSpawn;
-    public int batteriesToSpawn;
     public EnemySaveData[] Enemies;
     public BatterySaveData[] Batteries;
 }

@@ -12,6 +12,7 @@ public class BatteryController : MonoBehaviour
     private int batteryCapacity;
 
     private float batteryLife;
+    private int lastIntBatteryLife;
     private float maxBatteryLife;
 
     private float drainRate;
@@ -19,13 +20,13 @@ public class BatteryController : MonoBehaviour
     private void Awake()
     {
         soundManager ??= GameManager.instance.SoundManager;
+        gameplayMenu ??= GameManager.instance.UIManager.gameplayMenuController;
+        gameStateManager ??= GameManager.instance.GameStateManager;
     }
     void Start()
     {
         ApplySetting();
-        gameplayMenu ??= GameManager.instance.UIManager.gameplayMenuController;
-        gameplayMenu.UpdateBatteryCount(currentBatteryCount);
-        gameStateManager ??= GameManager.instance.GameStateManager;
+        UpdateBatteryCount();
     }
 
     // Update is called once per frame
@@ -37,30 +38,63 @@ public class BatteryController : MonoBehaviour
     public void HandleBatteryLife()
     {
         batteryLife -= Time.deltaTime * drainRate;
+        int intBatteryLife = Mathf.FloorToInt(batteryLife);
+
+        if (intBatteryLife != lastIntBatteryLife)
+        {
+            lastIntBatteryLife = intBatteryLife;
+            UpdateBatteryLife();
+        }
         if (batteryLife <= 0)
         {
-            currentBatteryCount--;
-            batteryLife = maxBatteryLife;
-            gameplayMenu.UpdateBatteryCount(currentBatteryCount);
+            ConsumeBattery();
         }
+    }
 
+    private void AddBattery()
+    {
+        if (currentBatteryCount < batteryCapacity)
+        {
+            currentBatteryCount++;
+            UpdateBatteryCount();
+        }
+    }
+
+    private void ConsumeBattery()
+    {
+        currentBatteryCount--;
+        batteryLife = maxBatteryLife;
+        EmptyBatteryCheck();
+    }
+
+    private void EmptyBatteryCheck()
+    {
         if (batteryLife <= 0 && batteryCapacity <= 0)
         {
             gameStateManager.SwitchToGameOver();
         }
-        gameplayMenu.UpdateBatteryLife(batteryLife);
+    }
+
+    private void UpdateBatteryLife()
+    {
+        gameplayMenu.UpdateBatteryLife(lastIntBatteryLife);
+    }
+
+    private void UpdateBatteryCount()
+    {
+        gameplayMenu.UpdateBatteryCount(currentBatteryCount);
     }
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Battery"))
         {
-            soundManager.PlayPickup(transform.position);
-            currentBatteryCount++;
-            gameplayMenu.UpdateBatteryCount(currentBatteryCount);
+            soundManager.PlayPickup(other.transform.position);
+            AddBattery();
             Destroy(other.gameObject);
         }
     }
+    #region Save and load for data
     public void Save(ref BatteryData data)
     {
         data.batteryCount = currentBatteryCount;
@@ -89,6 +123,7 @@ public class BatteryController : MonoBehaviour
         batteryLife = maxBatteryLife;
         gameplayMenu.UpdateBatteryCount(currentBatteryCount);
     }
+    #endregion
 }
 
 [System.Serializable]

@@ -3,12 +3,9 @@ using UnityEngine;
 public class PlayerSetting : ScriptableObject
 {
     [Header("Default Values")]
-    public float defaultMovementSpeed;
-    public float defaultMouseSensitivity;
-    public float defaultFireRate;
-
     public float movementSpeed;
     public float mouseSensitivity;
     public float fireRate;
+    public float laserDuration;
 
 }

@@ -17,21 +17,6 @@ public class LevelManager : MonoBehaviour
 
     }
 
-
-    public void SetPlayerSpawnPoint()
-    {
-        GameObject spawnPoint = GameObject.FindGameObjectWithTag("SpawnPoint");
-        GameObject player = GameObject.FindGameObjectWithTag("Player");
-        if (spawnPoint != null)
-        {
-            player.GetComponent<PlayerController>().MovePlayer(spawnPoint.transform.position);
-        }
-        else
-        {
-            Debug.LogError("Spawn or player missing");
-        }
-    }
-
     public void LoadLevel()
     {
         LoadScene("Level");

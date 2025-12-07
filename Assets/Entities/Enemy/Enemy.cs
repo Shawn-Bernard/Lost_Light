@@ -1,11 +1,12 @@
 using UnityEngine;
 using UnityEngine.AI;
-
+[RequireComponent(typeof(NavMeshAgent))]
 public class Enemy : MonoBehaviour
 {
     [SerializeField] private EnemySetting enemySetting;
+    [SerializeField] private SpawnDataContainer spawnDataContainer;
     [SerializeField] private NavMeshAgent enemy;
-    public GameObject player;
+    [SerializeField] private PlayerController player;
 
     private int caughtRange;
 
@@ -14,7 +15,7 @@ public class Enemy : MonoBehaviour
     void Start()
     {
         enemy ??= GetComponent<NavMeshAgent>();
-        player = GameObject.FindGameObjectWithTag("Player");
+        player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
         caughtRange = enemySetting.caughtRange;
         enemy.speed = Random.Range(enemySetting.minSpeed,enemySetting.maxSpeed);
         enemy.angularSpeed = enemySetting.turnSpeed;
@@ -29,17 +30,19 @@ public class Enemy : MonoBehaviour
     /// </summary>
     public void HandleAI()
     {
-        directionToPlayer = player.transform.position - transform.position;
+        if (player != null) directionToPlayer = player.transform.position - transform.position;
         float distanceToPlayer = directionToPlayer.magnitude;
-        enemy.SetDestination(player.transform.position);
+        if (enemy != null) enemy.SetDestination(player.transform.position);
         if (distanceToPlayer <= caughtRange)
         {
-            GameManager.instance.GameStateManager.SwitchToGameOver();
+            if (player != null)
+            player.Death();
         }
     }
 
     public void Death()
     {
+        spawnDataContainer.enemies.Remove(gameObject);
         Destroy(gameObject);
     }
 }

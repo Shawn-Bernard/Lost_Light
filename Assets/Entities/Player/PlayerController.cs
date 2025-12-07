@@ -1,18 +1,21 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.UIElements;
 
+[RequireComponent(typeof(CharacterController), typeof(LineRenderer))]
 public class PlayerController : MonoBehaviour
 {
-    [SerializeField] private InputManager inputManager;
     [SerializeField] private PlayerSetting playerSetting;
-
-    [SerializeField] private CharacterController characterController;
+    [SerializeField] private InputManager inputManager;
+    [SerializeField] private GameStateManager gameStateManager;
     [SerializeField] private SoundManager soundManager;
     [SerializeField] private ScoreManager scoreManager;
+
+    [SerializeField] private CharacterController characterController;
+    [SerializeField] private LineRenderer lineRenderer;
+
 
     private Vector2 moveInput;
 
@@ -22,14 +25,52 @@ public class PlayerController : MonoBehaviour
     private float movementSpeed;
     private float mouseSensitivity;
     private float fireRate;
+    private float laserDuration;
 
     private void Awake()
     {
         soundManager ??= GameManager.instance.SoundManager;
         scoreManager ??= GameManager.instance.ScoreManager;
         inputManager ??= GameManager.instance.InputManager;
+        gameStateManager ??= GameManager.instance.GameStateManager;
         characterController ??= GetComponent<CharacterController>();
+        lineRenderer ??= GetComponent<LineRenderer>();
         ApplySetting();
+    }
+
+    private void Update()
+    {
+        if (nextFireTime > 0)
+        {
+            nextFireTime -= Time.deltaTime;
+        }
+    }
+
+    private void ShootingEffect(Vector3 endPosition)
+    {
+        if (soundManager != null) 
+        {
+            soundManager.PlayShoot(transform.position);
+        }
+        StartCoroutine(AnimateLaser(endPosition));
+    }
+
+    private IEnumerator AnimateLaser(Vector3 endPosition)
+    {
+        if (lineRenderer != null) 
+        {
+            lineRenderer.enabled = true;
+
+            Vector3 startPosition = transform.position;
+
+            lineRenderer.SetPosition(0, startPosition);
+            lineRenderer.SetPosition(1, endPosition);
+
+
+            yield return new WaitForSeconds(laserDuration);
+
+            lineRenderer.enabled = false;
+        }
     }
 
     #region Handlers
@@ -70,24 +111,24 @@ public class PlayerController : MonoBehaviour
     {
         if (context.started)
         {
-            if (Time.time >= nextFireTime)
+            if (nextFireTime <= 0)
             {
-                soundManager.PlayShoot(transform.position);
                 RaycastHit hit;
                 if (Physics.Raycast(transform.position, transform.forward, out hit))
                 {
+                    ShootingEffect(hit.point);
                     if (hit.collider.CompareTag("Enemy"))
                     {
-                        scoreManager.KilledEnemy();
-                        soundManager.PlayHit(transform.position);
-                        hit.collider.GetComponent<Enemy>().Death();
+                        Enemy enemy = hit.collider.GetComponent<Enemy>();
+                        if (enemy != null)
+                        {
+                            enemy.Death();
+                            scoreManager.KilledEnemy();
+                            soundManager.PlayHit(hit.point);
+                        }
                     }
                 }
-                nextFireTime = Time.time + (1f / playerSetting.fireRate);
-            }
-            else
-            {
-                Debug.Log($"Can't shoot yet {nextFireTime}");
+                nextFireTime = fireRate;
             }
         }
     }
@@ -100,13 +141,23 @@ public class PlayerController : MonoBehaviour
     /// <param name="setPosition"></param>
     public void MovePlayer(Vector3 setPosition)
     {
-        characterController.enabled = false;
-        transform.position = setPosition;
-        characterController.enabled = true;
+        if (characterController != null) 
+        {
+            characterController.enabled = false;
+            transform.position = setPosition;
+            characterController.enabled = true;
+        }
+    }
+
+    public void Death()
+    {
+        gameStateManager.SwitchToGameOver();
     }
 
     private void OnEnable()
     {
+        GameplayState.gameplayStateUpdate += HandleMovement;
+        GameplayState.gameplayStateUpdate += HandleLook;
         inputManager.MoveInputEvent += SetMoveInput;
         inputManager.LookInputEvent += SetLookInput;
         inputManager.AttackInputEvent += SetAttackInput;
@@ -114,6 +165,8 @@ public class PlayerController : MonoBehaviour
 
     private void OnDisable()
     {
+        GameplayState.gameplayStateUpdate -= HandleMovement;
+        GameplayState.gameplayStateUpdate -= HandleLook;
         inputManager.MoveInputEvent -= SetMoveInput;
         inputManager.LookInputEvent -= SetLookInput;
         inputManager.AttackInputEvent -= SetAttackInput;
@@ -137,9 +190,6 @@ public class PlayerController : MonoBehaviour
     }
     public void ResetData()
     {
-        playerSetting.movementSpeed = playerSetting.defaultMovementSpeed;
-        playerSetting.mouseSensitivity = playerSetting.defaultMouseSensitivity;
-        playerSetting.fireRate = playerSetting.defaultFireRate;
         ApplySetting();
     }
     private void ApplySetting()
@@ -147,6 +197,7 @@ public class PlayerController : MonoBehaviour
         movementSpeed = playerSetting.movementSpeed;
         mouseSensitivity = playerSetting.mouseSensitivity;
         fireRate = playerSetting.fireRate;
+        laserDuration = playerSetting.laserDuration;
     }
 }
 

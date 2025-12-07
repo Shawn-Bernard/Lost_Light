@@ -5,20 +5,26 @@ public class MainMenuController : MonoBehaviour
 {
     private UIDocument menuUI;
 
-    GameManager gameManager => GameManager.instance;
+    GameManager gameManager;
 
-    UIManager uiManager => GameManager.instance.UIManager;
+    [SerializeField] private UIManager uiManager;
 
-    InputManager inputManager => GameManager.instance.InputManager;
+    [SerializeField] private InputManager inputManager;
 
-    LevelManager levelManager => GameManager.instance.LevelManager;
+    [SerializeField] private LevelManager levelManager;
 
-    GameStateManager gameStateManager => GameManager.instance.GameStateManager;
+    [SerializeField] private GameStateManager gameStateManager;
     private Button continueButton;
     private Button newGameButton;
     private Button quitButton;
     private void Awake()
     {
+        gameManager ??= GameManager.instance;
+        uiManager ??= GameManager.instance.UIManager;
+        inputManager ??= GameManager.instance.InputManager;
+        levelManager ??= GameManager.instance.LevelManager;
+        gameStateManager ??= GameManager.instance.GameStateManager;
+
         menuUI = GetComponent<UIDocument>();
         continueButton = menuUI.rootVisualElement.Q<Button>("ContinueButton");
         newGameButton = menuUI.rootVisualElement.Q<Button>("NewGameButton");
@@ -47,8 +53,22 @@ public class MainMenuController : MonoBehaviour
     private void NewGame()
     {
         SaveSystem.ResetGame();
-        levelManager.LoadLevel();
-        gameStateManager.SwitchToGameplay();
+        if (levelManager != null)
+        {
+            levelManager.LoadLevel();
+        }
+        else
+        {
+            levelManager ??= GameManager.instance.LevelManager;
+        }
+        if (gameStateManager != null)
+        {
+            gameStateManager.SwitchToGameplay();
+        }
+        else
+        {
+            gameStateManager ??= GameManager.instance.GameStateManager;
+        }
     }
 
     private void Continue()

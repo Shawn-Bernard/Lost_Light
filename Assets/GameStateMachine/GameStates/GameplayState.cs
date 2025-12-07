@@ -1,4 +1,5 @@
 using UnityEngine;
+using System;
 using UnityEngine.InputSystem;
 
 public class GameplayState : IState
@@ -13,32 +14,26 @@ public class GameplayState : IState
 
     #endregion
 
-    private ScoreManager scoreManager;
+    public static event Action gameplayStateUpdate;
 
     private PlayerController playerController;
     public void EnterState() 
     {
+        gameManager.UIManager.EnableGameplayMenu();
         Time.timeScale = 1;
         
-
-        gameManager.UIManager.EnableGameplayMenu();
-
-        Cursor.visible = false;
+        
         Cursor.lockState = CursorLockMode.Confined;
-        scoreManager ??= gameManager.ScoreManager;
         playerController ??= gameManager.PlayerController;
     }
 
     public void FixedUpdateState()
     {
-        playerController.HandleLook();
     }
 
     public void UpdateState()
     {
-        playerController.HandleMovement();
-        scoreManager.handleScoreTick();
-        scoreManager.handleGameTime();
+        gameplayStateUpdate?.Invoke();
     }
 
     public void LateUpdateState()

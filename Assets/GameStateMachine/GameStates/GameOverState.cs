@@ -19,7 +19,7 @@ public class GameOverState : IState
 
     public void ExitState()
     {
-
+        SaveSystem.ResetGame();
     }
 
     public void FixedUpdateState()

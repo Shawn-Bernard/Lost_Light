@@ -64,6 +64,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0da125a46c6cd8c46b8d640f092ee391, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  uiManager: {fileID: 2406169101588087146}
+  inputManager: {fileID: 992204676728871047}
+  levelManager: {fileID: 1077469011881241561}
+  gameStateManager: {fileID: 4719525607695057909}
 --- !u!1 &442793915689190447
 GameObject:
   m_ObjectHideFlags: 0
@@ -128,6 +132,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eec2b992dae15a04fafe1121b6c9785b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gameOverMenu: {fileID: 3306060402988728132}
+  levelManager: {fileID: 1077469011881241561}
+  gameStateManager: {fileID: 4719525607695057909}
+  gameOverController: {fileID: 2616595332400616938}
 --- !u!1 &555519360784582346
 GameObject:
   m_ObjectHideFlags: 0
@@ -236,7 +244,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 456ce87db0eef8d489bfb15337e52026, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gameplayMenu: {fileID: 7699568385089577486}
   uiManager: {fileID: 2406169101588087146}
+  inputManager: {fileID: 992204676728871047}
+  gameStateManager: {fileID: 4719525607695057909}
+  gameOverController: {fileID: 2616595332400616938}
 --- !u!1 &2409501172371686972
 GameObject:
   m_ObjectHideFlags: 0
@@ -326,7 +338,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameplayMenuController: {fileID: 8138291784370150702}
-  gameOverController: {fileID: 0}
+  gameOverController: {fileID: 2616595332400616938}
   scoreSetting: {fileID: 11400000, guid: 67a68662d4bb3f34895c8fb469a93f8f, type: 2}
 --- !u!1 &6178627183831416628
 GameObject:
@@ -381,12 +393,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inputManager: {fileID: 992204676728871047}
   gameStateManager: {fileID: 4719525607695057909}
-  playerController: {fileID: 0}
+  playerController: {fileID: 636534062825893409}
   uiManager: {fileID: 2406169101588087146}
   levelManager: {fileID: 1077469011881241561}
   scoreManager: {fileID: 4666987077574053854}
   soundManager: {fileID: 4937344170531262999}
-  batteryController: {fileID: 0}
+  batteryController: {fileID: 8310269019557215011}
   spawnDataContainer: {fileID: 11400000, guid: 050a9ede1af6cea4fa5cc54734600c5a, type: 2}
   mapSetting: {fileID: 11400000, guid: 1f9a062852262d64ea1a0ae9aee104c1, type: 2}
 --- !u!1 &6225867398610162051
@@ -591,7 +603,7 @@ MonoBehaviour:
   pauseMenuUI: {fileID: 236454234789633068}
   gameOverMenuUI: {fileID: 3306060402988728132}
   gameplayMenuController: {fileID: 8138291784370150702}
-  GameOverController: {fileID: 2616595332400616938}
+  gameOverController: {fileID: 2616595332400616938}
 --- !u!1 &6697686747690252667
 GameObject:
   m_ObjectHideFlags: 0
@@ -656,6 +668,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b73544dd29bbf3429a589013f710c24, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pauseMenu: {fileID: 236454234789633068}
+  levelManager: {fileID: 1077469011881241561}
+  gameStateManager: {fileID: 4719525607695057909}
 --- !u!1 &8663930763638472581
 GameObject:
   m_ObjectHideFlags: 0
@@ -710,6 +725,26 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 6341179340988908618}
     m_Modifications:
+    - target: {fileID: 6233465518990944520, guid: 720a623af1c4c5a419e111294b1470c5, type: 3}
+      propertyPath: inputManager
+      value: 
+      objectReference: {fileID: 992204676728871047}
+    - target: {fileID: 6233465518990944520, guid: 720a623af1c4c5a419e111294b1470c5, type: 3}
+      propertyPath: scoreManager
+      value: 
+      objectReference: {fileID: 4666987077574053854}
+    - target: {fileID: 6233465518990944520, guid: 720a623af1c4c5a419e111294b1470c5, type: 3}
+      propertyPath: soundManager
+      value: 
+      objectReference: {fileID: 4937344170531262999}
+    - target: {fileID: 6233465518990944520, guid: 720a623af1c4c5a419e111294b1470c5, type: 3}
+      propertyPath: gameStateManager
+      value: 
+      objectReference: {fileID: 4719525607695057909}
+    - target: {fileID: 6233465518990944520, guid: 720a623af1c4c5a419e111294b1470c5, type: 3}
+      propertyPath: characterController
+      value: 
+      objectReference: {fileID: 2005996398244131845}
     - target: {fileID: 6642108780430480232, guid: 720a623af1c4c5a419e111294b1470c5, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -764,3 +799,30 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 6642108780430480232, guid: 720a623af1c4c5a419e111294b1470c5, type: 3}
   m_PrefabInstance: {fileID: 6797299112442431273}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &636534062825893409 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6233465518990944520, guid: 720a623af1c4c5a419e111294b1470c5, type: 3}
+  m_PrefabInstance: {fileID: 6797299112442431273}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 585e7a962d62e6c41a221895ca7530fe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!143 &2005996398244131845 stripped
+CharacterController:
+  m_CorrespondingSourceObject: {fileID: 5008671975484715820, guid: 720a623af1c4c5a419e111294b1470c5, type: 3}
+  m_PrefabInstance: {fileID: 6797299112442431273}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &8310269019557215011 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3242831578645249034, guid: 720a623af1c4c5a419e111294b1470c5, type: 3}
+  m_PrefabInstance: {fileID: 6797299112442431273}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa951782588e19642ab9ed96ea77929b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

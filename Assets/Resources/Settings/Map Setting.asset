@@ -16,10 +16,10 @@ MonoBehaviour:
   width: 70
   defaultHeight: 70
   height: 70
-  seed: -1559510483
+  seed: -696162686
   randomFillPercent: 50
   mapSmooth: 5
-  passageRadius: 5
+  passageRadius: 6
   squareSize: 1
   borderSize: 5
   wallThresHoldSize: 50

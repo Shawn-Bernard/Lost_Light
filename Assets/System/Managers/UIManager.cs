@@ -10,7 +10,7 @@ public class UIManager : MonoBehaviour
 
     [Header("UI Menu Controllers")]
     public GameplayMenuController gameplayMenuController;
-    public GameOverController GameOverController;
+    public GameOverController gameOverController;
     private void Awake()
     {
         #region UI Document Check
@@ -22,6 +22,7 @@ public class UIManager : MonoBehaviour
         #endregion
 
         gameplayMenuController ??= GetComponentInChildren<GameplayMenuController>();
+        gameOverController ??= GetComponentInChildren<GameOverController>();
         DisableAllMenus();
     }
 

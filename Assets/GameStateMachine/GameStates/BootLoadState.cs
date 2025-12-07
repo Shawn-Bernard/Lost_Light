@@ -14,7 +14,6 @@ public class BootLoadState : IState
     #endregion
     public void EnterState()
     {
-        Cursor.visible = false;
 
         Time.timeScale = 0f;
 

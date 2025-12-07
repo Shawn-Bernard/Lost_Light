@@ -1,8 +1,4 @@
-using UnityEditor.VersionControl;
 using UnityEngine;
-
-// This help load first 
-//[DefaultExecutionOrder(-100)]
 
 public class GameManager : MonoBehaviour
 {

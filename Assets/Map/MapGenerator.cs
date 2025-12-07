@@ -23,19 +23,19 @@ public class MapGenerator : MonoBehaviour
     private int[,] map;
 
     private int borderSize;
-    private int wallThresHoldSize;
-    private int roomThresHoldSize;
+    private int wallThresholdSize;
+    private int roomThresholdSize;
 
     [SerializeField] GameObject ground;
 
     private Room mainRoom;
     private List<Room> survivingRooms = new List<Room>();
 
-    void Awake()
+    void Start()
     {
         ApplySetting();
         GenerateMap();
-        ground.transform.localScale = new Vector3(width, 1, height);
+        ground.transform.localScale = new Vector3(width/ 10, 1, height/10);
     }
     void ApplySetting()
     {
@@ -43,12 +43,10 @@ public class MapGenerator : MonoBehaviour
         height = mapSetting.height;
         if (SaveSystem.SaveFileExists() && !string.IsNullOrEmpty(mapSetting.seed))
         {
-            Debug.Log("Using data seed");
             seed = mapSetting.seed;
         }
         else
         {
-            Debug.Log("Using bad seed");
             seed = UnityEngine.Random.Range(int.MinValue, int.MaxValue).ToString();
         }
         randomFillPercent = mapSetting.randomFillPercent;
@@ -56,8 +54,8 @@ public class MapGenerator : MonoBehaviour
         passageRadius = mapSetting.passageRadius;
         squareSize = mapSetting.squareSize;
         borderSize = mapSetting.borderSize;
-        wallThresHoldSize = mapSetting.wallThresHoldSize;
-        roomThresHoldSize = mapSetting.roomThresHoldSize;
+        wallThresholdSize = mapSetting.wallThresHoldSize;
+        roomThresholdSize = mapSetting.roomThresHoldSize;
 
         mapSetting.width = width;
         mapSetting.height = height;
@@ -65,35 +63,37 @@ public class MapGenerator : MonoBehaviour
     }
 
     #region Map Logic
-    public Vector3 GetPositionInsideMap()
+    public Vector3[] GetPositionInsideMap()
     {
-        Room room;
-        List<Coord> safeTiles;
-
-        room = survivingRooms[UnityEngine.Random.Range(0, survivingRooms.Count)];
-        safeTiles = new List<Coord>();
-
-        foreach (Coord tile in room.tiles)
+        List<Vector3> safePositions;
+        safePositions = new List<Vector3>();
+        foreach (Room _room in survivingRooms)
         {
-            bool isSafe = true;
-            // Checks for safe tiles to spawn thats not a wall
-            for (int x = tile.tileX - 1; x <= tile.tileX + 1; x++)
+            foreach (Coord tile in _room.tiles)
             {
-                for (int y = tile.tileY - 1; y <= tile.tileY + 1; y++)
+                bool isSafe = true;
+                // Checks for safe tiles to spawn thats not a wall
+                for (int x = tile.tileX - 1; x <= tile.tileX + 1; x++)
                 {
-                    if (IsInMapRange(x, y) && map[x, y] == 1)
+                    for (int y = tile.tileY - 1; y <= tile.tileY + 1; y++)
                     {
-                        isSafe = false;
-                        break;
+                        if (IsInMapRange(x, y) && map[x, y] == 1)
+                        {
+                            isSafe = false;
+                            break;
+                        }
                     }
                 }
+                if (isSafe)
+                {
+                    safePositions.Add(CoordToWorldPointForSpawning(tile));
+                }
             }
-            if (isSafe) safeTiles.Add(tile);
         }
-
-        Coord safeCoord = safeTiles[UnityEngine.Random.Range(0, safeTiles.Count)];
-        return CoordToWorldPoint(safeCoord);
+        
+        return safePositions.ToArray();
     }
+
     /// <summary>
     /// Creates a new array for map, smooths map, process the walls and rooms, creates mesh and spawn player 
     /// </summary>
@@ -139,7 +139,7 @@ public class MapGenerator : MonoBehaviour
 
         foreach (List<Coord> wallRegion in wallRegions)
         {
-            if (wallRegion.Count < wallThresHoldSize)
+            if (wallRegion.Count < wallThresholdSize)
             {
                 foreach (Coord tile in wallRegion)
                 {
@@ -154,7 +154,7 @@ public class MapGenerator : MonoBehaviour
 
         foreach (List<Coord> roomRegion in roomRegions)
         {
-            if (roomRegion.Count < roomThresHoldSize)
+            if (roomRegion.Count < roomThresholdSize)
             {
                 foreach (Coord tile in roomRegion)
                 {
@@ -382,6 +382,10 @@ public class MapGenerator : MonoBehaviour
     {
         return new Vector3(-width / 2 + .5f + tile.tileX, 0, -height / 2 + .5f + tile.tileY);
     }
+    Vector3 CoordToWorldPointForSpawning(Coord tile)
+    {
+        return new Vector3(-width / 2 + .5f + tile.tileX, .5f, -height / 2 + .5f + tile.tileY);
+    }
 
     /// <summary>
     /// Returns a list of connects reigons
@@ -486,13 +490,13 @@ public class MapGenerator : MonoBehaviour
         {
             for (int y = 0; y < height; y++)
             {
-                int neighrbourWallTiles = GetSurroundingWallCount(x, y);
+                int neighbourWallTiles = GetSurroundingWallCount(x, y);
                 
-                if (neighrbourWallTiles > 4)
+                if (neighbourWallTiles > 4)
                 {
                     map[x, y] = 1;
                 }
-                else if (neighrbourWallTiles < 4)
+                else if (neighbourWallTiles < 4)
                 {
                     map[x, y] = 0;
                 }

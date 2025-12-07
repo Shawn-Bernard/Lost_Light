@@ -14,4 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   scoreTickInterval: 5
   scorePerTick: 100
-  scoreEnemy: 200
+  scoreEnemy: 50

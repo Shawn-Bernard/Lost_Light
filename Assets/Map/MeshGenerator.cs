@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System;
 using Unity.AI.Navigation;
+[RequireComponent(typeof(NavMeshSurface))]
 public class MeshGenerator : MonoBehaviour
 {
     public MeshFilter walls;

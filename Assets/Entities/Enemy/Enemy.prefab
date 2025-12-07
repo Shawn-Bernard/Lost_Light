@@ -123,12 +123,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemySetting: {fileID: 11400000, guid: ea08d94996880fd4589285e795ab5043, type: 2}
+  spawnDataContainer: {fileID: 11400000, guid: 050a9ede1af6cea4fa5cc54734600c5a, type: 2}
   enemy: {fileID: 5583943419579141957}
-  player: {fileID: 8819849428739397901, guid: 720a623af1c4c5a419e111294b1470c5, type: 3}
-  range: 6
-  coneAngle: 80
-  caughtRange: 2
-  searchRange: 20
+  player: {fileID: 6233465518990944520, guid: 720a623af1c4c5a419e111294b1470c5, type: 3}
 --- !u!195 &5583943419579141957
 NavMeshAgent:
   m_ObjectHideFlags: 0

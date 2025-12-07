@@ -12,9 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1cfb029fa4997a24a882929f09c539e5, type: 3}
   m_Name: Player Setting
   m_EditorClassIdentifier: 
-  defaultMovementSpeed: 5
-  defaultMouseSensitivity: 5
-  defaultFireRate: 1
   movementSpeed: 5
-  mouseSensitivity: 5
+  mouseSensitivity: 10
   fireRate: 1
+  laserDuration: 0.3

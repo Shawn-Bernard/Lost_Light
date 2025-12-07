@@ -1,6 +1,7 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class ScoreManager : MonoBehaviour
 {
@@ -9,24 +10,22 @@ public class ScoreManager : MonoBehaviour
     [SerializeField] private GameOverController gameOverController;
     [SerializeField] private ScoreSetting scoreSetting;
     private int score;
-    private float scoreTimer;
 
     private float currentTime;
     private int lastDisplayedSeconds;
 
     private int highScore;
     private float bestTime;
+    private float scoreTimer;
 
     private void Awake()
     {
         gameplayMenuController ??= GameManager.instance.UIManager.gameplayMenuController;
-        gameOverController ??= GameManager.instance.UIManager.GameOverController;
     }
-
     /// <summary>
-    /// Updates game time UI 
+    /// Score goes up every timed interval
     /// </summary>
-    public void handleGameTime()
+    public void HandleScore()
     {
         currentTime += Time.deltaTime;
 
@@ -35,37 +34,39 @@ public class ScoreManager : MonoBehaviour
         if (currentSeconds != lastDisplayedSeconds)
         {
             lastDisplayedSeconds = currentSeconds;
-            gameplayMenuController.UpdateTime(currentTime);
 
             if (lastDisplayedSeconds > bestTime)
             {
                 bestTime = currentTime;
             }
+
+            UpdateScore();
         }
-    }
-    /// <summary>
-    /// Score goes up every timed interval
-    /// </summary>
-    public void handleScoreTick()
-    {
         scoreTimer += Time.deltaTime;
+
         if (scoreTimer >= scoreSetting.scoreTickInterval)
         {
             score += scoreSetting.scorePerTick;
+
             scoreTimer -= scoreSetting.scoreTickInterval;
-            gameplayMenuController.UpdateScore(score);
+
             if (score > highScore)
             {
                 highScore = score;
-                gameOverController.UpdateHighScore(highScore, bestTime);
             }
+
+            UpdateScore();
         }
     }
 
     public void KilledEnemy()
     {
         score += scoreSetting.scoreEnemy;
-        gameplayMenuController.UpdateScore(score);
+    }
+
+    public void UpdateScore()
+    {
+        gameplayMenuController.UpdateScore(score, currentTime);
     }
 
     public void Save(ref ScoreData data)
@@ -84,6 +85,7 @@ public class ScoreManager : MonoBehaviour
 
         currentTime = data.currentTime;
         bestTime = data.bestTime;
+        gameplayMenuController.UpdateScore(highScore, bestTime);
     }
 
     public void ResetData()
@@ -92,8 +94,16 @@ public class ScoreManager : MonoBehaviour
         highScore = 0;
         currentTime = 0;
         bestTime = 0;
-        gameplayMenuController.UpdateScore(score);
-        gameplayMenuController.UpdateTime(currentTime);
+        UpdateScore();
+    }
+
+    private void OnEnable()
+    {
+        GameplayState.gameplayStateUpdate += HandleScore;
+    }
+    private void OnDisable()
+    {
+        GameplayState.gameplayStateUpdate -= HandleScore;
     }
 }
 [System.Serializable]
